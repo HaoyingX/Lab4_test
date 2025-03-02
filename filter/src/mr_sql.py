@@ -28,10 +28,15 @@ class MRMoviesByGenreCount(MRJob):
 
         """
         import csv
+        import re
         reader = csv.reader([line])
         for row in reader:
             if row[1] == 'Western' or row[1] == 'Sci-Fi':
-                year = row[0][-5:-1]
+                match = re.findall(r'\(([^)]*)\)', row[0])
+                if match:
+                    year = match[-1]
+                else:
+                    year = None
                 key = (year,row[1])
                 yield key,1
         # yield key, value pairs for your program
