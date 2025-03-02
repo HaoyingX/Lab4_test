@@ -27,13 +27,23 @@ class MRMoviesByGenreCount(MRJob):
                 your reducer does the result operations correctly.
 
         """
+        import csv
+        import re
+        reader = csv.reader([line])
+        for row in reader:
+            if row[1] == 'Western' or row[1] == 'Sci-Fi':
+                year = (re.search(r'\((\d{4})\)', row[0])).group(1)
+                key = (year,row[1])
+                yield key,1
         # yield key, value pairs for your program
         pass
 
     # optional: implement the combiner:
-    # def combiner(self, key, values):
+    def combiner(self, key, values):
         # start using the key-value pairs to calculate the query result
-        # pass
+        yield key,sum(values)
+            
+        pass
 
     def reducer(self, key, values):
         """
@@ -55,8 +65,13 @@ class MRMoviesByGenreCount(MRJob):
                     value corresponding to each key.
         """
         # use the key-value pairs to calculate the query result
+        yield key,sum(values)
         pass
 
 # don't forget the '__name__' == '__main__' clause!
 if __name__ == '__main__':
     MRMoviesByGenreCount.run()
+    
+
+    
+
