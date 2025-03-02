@@ -32,7 +32,7 @@ class MRMoviesByGenreCount(MRJob):
         reader = csv.reader([line])
         for row in reader:
             if row[1] == 'Western' or row[1] == 'Sci-Fi':
-                year = (re.search(r'\((\d{4})\)', row[0])).group(1)
+                year = re.search(r'\((\d{4})\)', row[0]).group(1)
                 key = (year,row[1])
                 yield key,1
         # yield key, value pairs for your program
@@ -71,7 +71,6 @@ class MRMoviesByGenreCount(MRJob):
 # don't forget the '__name__' == '__main__' clause!
 if __name__ == '__main__':
     MRMoviesByGenreCount.run()
-    
 
     
 
